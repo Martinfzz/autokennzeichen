@@ -21,31 +21,33 @@ const Map = () => {
 
   return (
     <>
-      <ReactMapGL
-        {...viewport}
-        width="100vw"
-        height="100vh"
-        onViewportChange={setViewport}
-        mapStyle={mapStyle}
-        mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
-      >
-        <Pins data={CITIES} onClick={setPopupInfo} />
-
-        {popupInfo && (
-        <Popup
-          tipSize={5}
-          anchor="top"
-          longitude={popupInfo.longitude}
-          latitude={popupInfo.latitude}
-          closeOnClick={false}
-          onClose={setPopupInfo}
+      <div className="top-0 z-10 absolute">
+        <ReactMapGL
+          {...viewport}
+          width="100vw"
+          height="100vh"
+          onViewportChange={setViewport}
+          mapStyle={mapStyle}
+          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
         >
-          <CityInfo info={popupInfo} />
-        </Popup>
-        )}
+          <Pins data={CITIES} onClick={setPopupInfo} />
 
-      </ReactMapGL>
-      <MapDisplay onChange={setMapStyle} />
+          {popupInfo && (
+          <Popup
+            tipSize={5}
+            anchor="top"
+            longitude={popupInfo.longitude}
+            latitude={popupInfo.latitude}
+            closeOnClick={false}
+            onClose={setPopupInfo}
+          >
+            <CityInfo info={popupInfo} />
+          </Popup>
+          )}
+
+        </ReactMapGL>
+        <MapDisplay onChange={setMapStyle} />
+      </div>
     </>
   );
 };
