@@ -9,11 +9,7 @@ const SIZE = 20;
 
 // Important for perf: the markers never change, avoid rerender when the map viewport changes
 function Pins(props) {
-  const { data } = props;
-
-  const azer = (value) => {
-    console.log(value);
-  };
+  const { data, onClick } = props;
 
   return data.map((city, index) => (
     // eslint-disable-next-line react/no-array-index-key
@@ -27,7 +23,7 @@ function Pins(props) {
           stroke: "none",
           transform: `translate(${-SIZE / 2}px,${-SIZE}px)`,
         }}
-        onClick={() => azer(city.city)}
+        onClick={() => onClick(city)}
       >
         <path d={ICON} />
       </svg>

@@ -1,9 +1,10 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from "react";
-import ReactMapGL from "react-map-gl";
+import ReactMapGL, { Popup } from "react-map-gl";
 import MapDisplay from "../MapDisplay";
 import Pins from "../Pins";
 import CITIES from "../../assets/data/cities.json";
+import CityInfo from "../../city-info";
 
 const Map = () => {
   const [viewport, setViewport] = useState({
@@ -16,9 +17,7 @@ const Map = () => {
 
   const [mapStyle, setMapStyle] = useState("");
 
-  const setPopupInfo = () => {
-    console.log("click");
-  };
+  const [popupInfo, setPopupInfo] = useState(null);
 
   return (
     <>
@@ -31,8 +30,21 @@ const Map = () => {
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
       >
         <Pins data={CITIES} onClick={setPopupInfo} />
-      </ReactMapGL>
 
+        {popupInfo && (
+        <Popup
+          tipSize={5}
+          anchor="top"
+          longitude={popupInfo.longitude}
+          latitude={popupInfo.latitude}
+          closeOnClick={false}
+          onClose={setPopupInfo}
+        >
+          <CityInfo info={popupInfo} />
+        </Popup>
+        )}
+
+      </ReactMapGL>
       <MapDisplay onChange={setMapStyle} />
     </>
   );
