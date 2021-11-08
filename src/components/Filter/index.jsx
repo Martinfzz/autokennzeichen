@@ -1,5 +1,8 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
+// import { Switch } from "antd";
+import Switch from "react-switch";
 import store from "../../store/store";
 import { filterSuccess } from "../../store/user/userAction";
 import CITIES from "../../assets/data/cities.json";
@@ -27,11 +30,13 @@ const options = [
 const Filter = () => {
   const [searchValue, setSearchValue] = useState("");
   const [searchLaender, setSearchLaender] = useState([]);
+  const [buttonCodeChecked, setButtonCodeChecked] = useState(true);
+  const [buttonCityChecked, setButtonCityChecked] = useState(false);
 
-  useEffect(() => {
+  const filtered = (target) => {
     if (searchValue !== "" && searchLaender.length !== 0) {
       const filteredCities = searchLaender.map((element) => CITIES.filter(
-        (n) => n.laender.includes(element.value) && n.code === searchValue,
+        (n) => n.laender.includes(element.value) && n[`${target}`].toLowerCase() === searchValue.toLowerCase(),
       )).flat(1);
       store.dispatch(filterSuccess(filteredCities));
     } else if (searchValue === "" && searchLaender.length !== 0) {
@@ -41,29 +46,27 @@ const Filter = () => {
       store.dispatch(filterSuccess(filteredCities));
     } else if (searchValue !== "" && searchLaender.length === 0) {
       const filteredCities = CITIES.filter(
-        (element) => element.code === searchValue,
+        (element) => element[`${target}`].toLowerCase() === searchValue.toLowerCase(),
       );
       store.dispatch(filterSuccess(filteredCities));
     } else {
       store.dispatch(filterSuccess(CITIES));
     }
-  }, [searchValue, searchLaender]);
+  };
 
-  // if (e.length === 0) {
-  //   setSearchLaender
-  // } else {
-  //   const filteredLaender = e.map((element) => searchValue.filter(
-  //     (n) => n.laender.includes(element.value),
-  //   )).flat(1);
-  //   console.log(filteredLaender);
-  //   store.dispatch(filterSuccess(filteredLaender));
-  // }
+  useEffect(() => {
+    if (buttonCodeChecked) {
+      filtered("code");
+    } else if (buttonCityChecked) {
+      filtered("city");
+    }
+  }, [searchValue, searchLaender, buttonCodeChecked, buttonCityChecked]);
 
-  const handleOnChange = (e) => {
+  const handleOnChangeCity = (e) => {
     if (e.target.value === "") {
       setSearchValue("");
     } else {
-      setSearchValue(e.target.value.toUpperCase());
+      setSearchValue(e.target.value);
     }
   };
 
@@ -73,6 +76,16 @@ const Filter = () => {
     } else {
       setSearchLaender(e);
     }
+  };
+
+  const handleOnChangeCodeRadio = (checked) => {
+    setButtonCodeChecked(checked);
+    setButtonCityChecked(!checked);
+  };
+
+  const handleOnChangeCityRadio = (checked) => {
+    setButtonCodeChecked(!checked);
+    setButtonCityChecked(checked);
   };
 
   return (
@@ -85,7 +98,7 @@ const Filter = () => {
           className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
           placeholder="Search"
           value={searchValue.name}
-          onChange={(e) => handleOnChange(e)}
+          onChange={(e) => handleOnChangeCity(e)}
         />
       </div>
       <Select
@@ -96,6 +109,14 @@ const Filter = () => {
         classNamePrefix="select"
         onChange={(e) => handleOnChangeLaender(e)}
       />
+      <label>
+        <span>Code</span>
+        <Switch onChange={handleOnChangeCodeRadio} checked={buttonCodeChecked} />
+      </label>
+      <label>
+        <span>City</span>
+        <Switch onChange={handleOnChangeCityRadio} checked={buttonCityChecked} />
+      </label>
     </div>
 
   );
