@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
-// import { Switch } from "antd";
+import makeAnimated from "react-select/animated";
 import Switch from "react-switch";
 import store from "../../store/store";
 import { filterSuccess } from "../../store/user/userAction";
@@ -24,8 +24,9 @@ const options = [
   { value: "Saxe-Anhalt", label: "Sachsen-Anhalt" },
   { value: "Schleswig-Holstein", label: "Schleswig-Holstein" },
   { value: "Thüringen", label: "Thüringen" },
-
 ];
+
+const animatedComponents = makeAnimated();
 
 const Filter = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -88,6 +89,13 @@ const Filter = () => {
     setButtonCityChecked(checked);
   };
 
+  const handleOnClick = () => {
+    setSearchValue("");
+    setSearchLaender([]);
+    setButtonCodeChecked(true);
+    setButtonCityChecked(false);
+  };
+
   return (
     <div>
       <div className="mt-1 relative rounded-md shadow-sm">
@@ -97,12 +105,15 @@ const Filter = () => {
           id="price"
           className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
           placeholder="Search"
-          value={searchValue.name}
+          value={searchValue}
           onChange={(e) => handleOnChangeCity(e)}
         />
       </div>
       <Select
         isMulti
+        value={searchLaender}
+        closeMenuOnSelect={false}
+        components={animatedComponents}
         name="colors"
         options={options}
         className="basic-multi-select"
@@ -117,6 +128,9 @@ const Filter = () => {
         <span>City</span>
         <Switch onChange={handleOnChangeCityRadio} checked={buttonCityChecked} />
       </label>
+      <button type="button" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleOnClick}>
+        Reset
+      </button>
     </div>
 
   );
