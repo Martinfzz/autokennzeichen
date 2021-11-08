@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import ReactMapGL, { Popup } from "react-map-gl";
 import MapDisplay from "../MapDisplay";
 import Pins from "../Pins";
-import CITIES from "../../assets/data/cities.json";
 import CityInfo from "../../city-info";
+import Cities from "../Cities";
 
 const Map = () => {
   const [viewport, setViewport] = useState({
@@ -16,12 +16,16 @@ const Map = () => {
   });
 
   const [mapStyle, setMapStyle] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
 
   const [popupInfo, setPopupInfo] = useState(null);
+
+  console.log(filteredData);
 
   return (
     <>
       <div className="top-0 z-10 absolute">
+        <Cities data={setFilteredData} />
         <ReactMapGL
           {...viewport}
           width="100vw"
@@ -30,7 +34,7 @@ const Map = () => {
           mapStyle={mapStyle}
           mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
         >
-          <Pins data={CITIES} onClick={setPopupInfo} />
+          <Pins data={filteredData} onClick={setPopupInfo} />
 
           {popupInfo && (
           <Popup
