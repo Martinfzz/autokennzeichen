@@ -3,13 +3,12 @@ import {
   FILTER_SUCCESS,
   FILTER_FAILED,
 } from "./userType";
+import CITIES from "../../assets/data/cities.json";
 
 const INITIAL_STATE = {
   loading: false,
-  isFilteringSucceed: false,
-  filter: {
-    code: "", city: "",
-  },
+  isFiltered: false,
+  filterData: CITIES,
   filterError: "",
   error: "",
 };
@@ -20,7 +19,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         loading: true,
-        isUpdateSucceed: false,
+        isFiltered: false,
         filterError: "",
         error: "",
       };
@@ -28,13 +27,15 @@ const userReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         loading: false,
+        isFiltered: false,
         filterError: action.error,
       };
     case FILTER_SUCCESS:
       return {
         ...state,
         loading: false,
-        filter: action.filterData,
+        isFiltered: true,
+        filterData: action.filter,
       };
     default:
       return state;

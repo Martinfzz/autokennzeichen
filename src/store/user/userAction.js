@@ -8,10 +8,9 @@ export const filterRequest = () => ({
   type: FILTER_REQUEST,
 });
 
-export const filterSuccess = (user, token) => ({
+export const filterSuccess = (data) => ({
   type: FILTER_SUCCESS,
-  userProfile: user,
-  jtwToken: token,
+  filter: data,
 });
 
 export const filterFailed = (error) => ({

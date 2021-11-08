@@ -1,11 +1,21 @@
 import React, { useState } from "react";
+import store from "../../store/store";
+import { filterSuccess } from "../../store/user/userAction";
+import CITIES from "../../assets/data/cities.json";
 
 const Filter = () => {
-  const [searchValue, setSearchValue] = useState({ name: "", city: "" });
+  const [searchValue, setSearchValue] = useState(CITIES);
+
   const handleOnChange = (e) => {
+    if (e.target.value === "") {
+      store.dispatch(filterSuccess(CITIES));
+    } else {
+      store.dispatch(filterSuccess(CITIES.filter((element) => element.code === e.target.value)));
+    }
+
     setSearchValue({ name: e.target.value });
   };
-  console.log(searchValue);
+
   return (
     <div>
       <div className="mt-1 relative rounded-md shadow-sm">

@@ -1,10 +1,10 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from "react";
 import ReactMapGL, { Popup } from "react-map-gl";
+import { useSelector } from "react-redux";
 import MapDisplay from "../MapDisplay";
 import Pins from "../Pins";
 import CityInfo from "../../city-info";
-import Cities from "../Cities";
 
 const Map = () => {
   const [viewport, setViewport] = useState({
@@ -16,16 +16,13 @@ const Map = () => {
   });
 
   const [mapStyle, setMapStyle] = useState("");
-  const [filteredData, setFilteredData] = useState([]);
+  const filteredData = useSelector((store) => store.filterData);
 
   const [popupInfo, setPopupInfo] = useState(null);
-
-  console.log(filteredData);
 
   return (
     <>
       <div className="top-0 z-10 absolute">
-        <Cities data={setFilteredData} />
         <ReactMapGL
           {...viewport}
           width="100vw"
