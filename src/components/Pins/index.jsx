@@ -12,9 +12,9 @@ const SIZE = 20;
 function Pins(props) {
   const { data, onClick } = props;
 
-  return data.map((city, index) => (
-    <div className="z-10">
-      <Marker key={`${index}`} longitude={city.longitude} latitude={city.latitude}>
+  return data.map((city) => (
+    <div className="z-10" key={`${city.code}`}>
+      <Marker longitude={city.longitude} latitude={city.latitude}>
         <svg
           height={SIZE}
           viewBox="0 0 24 24"

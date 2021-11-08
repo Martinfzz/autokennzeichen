@@ -2,6 +2,7 @@ import {
   FILTER_REQUEST,
   FILTER_SUCCESS,
   FILTER_FAILED,
+  MAP_INFOS,
 } from "./userType";
 import CITIES from "../../assets/data/cities.json";
 
@@ -11,6 +12,7 @@ const INITIAL_STATE = {
   filterData: CITIES,
   filterError: "",
   error: "",
+  map: "",
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -36,6 +38,11 @@ const userReducer = (state = INITIAL_STATE, action) => {
         loading: false,
         isFiltered: true,
         filterData: action.filter,
+      };
+    case MAP_INFOS:
+      return {
+        ...state,
+        map: action.mapData,
       };
     default:
       return state;
