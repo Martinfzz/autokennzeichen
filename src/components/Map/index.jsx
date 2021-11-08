@@ -18,6 +18,8 @@ const Map = () => {
   const [mapStyle, setMapStyle] = useState("");
   const filteredData = useSelector((store) => store.filterData);
 
+  console.log(filteredData);
+
   const [popupInfo, setPopupInfo] = useState(null);
 
   return (

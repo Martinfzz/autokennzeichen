@@ -1,19 +1,66 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import Select from "react-select";
 import store from "../../store/store";
 import { filterSuccess } from "../../store/user/userAction";
 import CITIES from "../../assets/data/cities.json";
 
+const options = [
+  { value: "Bayern", label: "Bayern" },
+  { value: "Baden-Württemberg", label: "Baden-Württemberg" },
+  { value: "Thüringen", label: "Thüringen" },
+];
+
 const Filter = () => {
-  const [searchValue, setSearchValue] = useState(CITIES);
+  const [searchValue, setSearchValue] = useState("");
+  const [searchLaender, setSearchLaender] = useState([]);
+
+  useEffect(() => {
+    console.log(searchValue);
+    console.log(searchLaender);
+    if (searchValue !== "" && searchLaender.length !== 0) {
+      const filteredCities = searchLaender.map((element) => CITIES.filter(
+        (n) => n.laender.includes(element.value) && n.code === searchValue,
+      )).flat(1);
+      store.dispatch(filterSuccess(filteredCities));
+    } else if (searchValue === "" && searchLaender.length !== 0) {
+      const filteredCities = searchLaender.map((element) => CITIES.filter(
+        (n) => n.laender.includes(element.value),
+      )).flat(1);
+      store.dispatch(filterSuccess(filteredCities));
+    } else if (searchValue !== "" && searchLaender.length === 0) {
+      const filteredCities = CITIES.filter(
+        (element) => element.code === searchValue,
+      );
+      store.dispatch(filterSuccess(filteredCities));
+    } else {
+      store.dispatch(filterSuccess(CITIES));
+    }
+  }, [searchValue, searchLaender]);
+
+  // if (e.length === 0) {
+  //   setSearchLaender
+  // } else {
+  //   const filteredLaender = e.map((element) => searchValue.filter(
+  //     (n) => n.laender.includes(element.value),
+  //   )).flat(1);
+  //   console.log(filteredLaender);
+  //   store.dispatch(filterSuccess(filteredLaender));
+  // }
 
   const handleOnChange = (e) => {
     if (e.target.value === "") {
-      store.dispatch(filterSuccess(CITIES));
+      setSearchValue("");
     } else {
-      store.dispatch(filterSuccess(CITIES.filter((element) => element.code === e.target.value)));
+      setSearchValue(e.target.value.toUpperCase());
     }
+  };
 
-    setSearchValue({ name: e.target.value });
+  const handleOnChangeLaender = (e) => {
+    if (e.length === 0) {
+      setSearchLaender([]);
+    } else {
+      setSearchLaender(e);
+    }
   };
 
   return (
@@ -29,6 +76,14 @@ const Filter = () => {
           onChange={(e) => handleOnChange(e)}
         />
       </div>
+      <Select
+        isMulti
+        name="colors"
+        options={options}
+        className="basic-multi-select"
+        classNamePrefix="select"
+        onChange={(e) => handleOnChangeLaender(e)}
+      />
     </div>
 
   );
