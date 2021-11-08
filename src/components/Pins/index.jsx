@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import * as React from "react";
 import { Marker } from "react-map-gl";
 
@@ -12,22 +13,23 @@ function Pins(props) {
   const { data, onClick } = props;
 
   return data.map((city, index) => (
-    // eslint-disable-next-line react/no-array-index-key
-    <Marker key={`${index}`} longitude={city.longitude} latitude={city.latitude}>
-      <svg
-        height={SIZE}
-        viewBox="0 0 24 24"
-        style={{
-          cursor: "pointer",
-          fill: "#d00",
-          stroke: "none",
-          transform: `translate(${-SIZE / 2}px,${-SIZE}px)`,
-        }}
-        onClick={() => onClick(city)}
-      >
-        <path d={ICON} />
-      </svg>
-    </Marker>
+    <div className="z-10">
+      <Marker key={`${index}`} longitude={city.longitude} latitude={city.latitude}>
+        <svg
+          height={SIZE}
+          viewBox="0 0 24 24"
+          style={{
+            cursor: "pointer",
+            fill: "#d00",
+            stroke: "none",
+            transform: `translate(${-SIZE / 2}px,${-SIZE}px)`,
+          }}
+          onClick={() => onClick(city)}
+        >
+          <path d={ICON} />
+        </svg>
+      </Marker>
+    </div>
   ));
 }
 
