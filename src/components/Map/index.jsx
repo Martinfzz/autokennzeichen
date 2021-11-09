@@ -2,9 +2,9 @@
 import React, { useState } from "react";
 import ReactMapGL, { Popup } from "react-map-gl";
 import { useSelector } from "react-redux";
-import MapDisplay from "../MapDisplay";
 import Pins from "../Pins";
 import CityInfo from "../../city-info";
+import MapDisplay from "../MapDisplay";
 
 const Map = () => {
   const [viewport, setViewport] = useState({
@@ -15,13 +15,14 @@ const Map = () => {
     pitch: 0,
   });
 
-  const [mapStyle, setMapStyle] = useState("");
   const [popupInfo, setPopupInfo] = useState(null);
   const filteredData = useSelector((store) => store.filterData);
+  const mapStyle = useSelector((store) => store.map);
 
   return (
     <>
       <div className="top-0 z-10 absolute">
+        <MapDisplay />
         <ReactMapGL
           {...viewport}
           width="100vw"
@@ -46,7 +47,6 @@ const Map = () => {
           )}
 
         </ReactMapGL>
-        <MapDisplay onChange={setMapStyle} />
       </div>
     </>
   );

@@ -1,6 +1,8 @@
 import * as React from "react";
 import { fromJS } from "immutable";
 import MAP_STYLE from "../../assets/data/map-style-basic-v8.json";
+import store from "../../store/store";
+import { mapInfos } from "../../store/user/userAction";
 
 const defaultMapStyle = fromJS(MAP_STYLE);
 const defaultLayers = defaultMapStyle.get("layers");
@@ -41,10 +43,10 @@ function getMapStyle({ visibility, color }) {
       return layer;
     });
 
-  return defaultMapStyle.set("layers", layers);
+  store.dispatch(mapInfos(defaultMapStyle.set("layers", layers)));
 }
 
-function StyleControls(props) {
+function StyleControls() {
   const visibility = {
     water: true,
     parks: true,
@@ -53,15 +55,6 @@ function StyleControls(props) {
     labels: true,
     background: true,
   };
-
-  // const color = {
-  //   water: "#DBE2E6",
-  //   parks: "#E6EAE9",
-  //   buildings: "#c0c0c8",
-  //   roads: "#ffffff",
-  //   labels: "#78888a",
-  //   background: "#EBF0F0",
-  // };
 
   const color = {
     water: "#242424",
@@ -72,11 +65,9 @@ function StyleControls(props) {
     background: "#2f2f2f",
   };
 
-  // eslint-disable-next-line react/destructuring-assignment
-  props.onChange(getMapStyle({ visibility, color }));
+  getMapStyle({ visibility, color });
 
   return (
-    // eslint-disable-next-line react/jsx-filename-extension
     <></>
   );
 }
