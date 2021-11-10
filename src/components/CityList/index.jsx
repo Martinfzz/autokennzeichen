@@ -25,11 +25,12 @@ import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
 import { useSelector } from "react-redux";
 
-function createData(code, city, laender) {
+function createData(code, city, laender, cityUrl) {
   return {
     code,
     city,
     laender,
+    cityUrl,
   };
 }
 
@@ -264,9 +265,8 @@ export default function EnhancedTable() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const filteredData = useSelector((store) => store.filterData);
 
-  const rows = filteredData.map((e) => createData(e.code, e.city, e.laender));
+  const rows = filteredData.map((e) => createData(e.code, e.city, e.laender, e.city_url));
 
-  console.log(rows);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -346,7 +346,6 @@ export default function EnhancedTable() {
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.code)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
@@ -355,6 +354,7 @@ export default function EnhancedTable() {
                     >
                       <TableCell padding="checkbox">
                         <Checkbox
+                          onClick={(event) => handleClick(event, row.code)}
                           color="primary"
                           checked={isItemSelected}
                           inputProps={{
@@ -370,10 +370,8 @@ export default function EnhancedTable() {
                       >
                         {row.code}
                       </TableCell>
-                      <TableCell align="right">{row.city}</TableCell>
+                      <TableCell align="right"><a href={row.cityUrl} rel="noreferrer" target="_blank">{row.city}</a></TableCell>
                       <TableCell align="right">{row.laender}</TableCell>
-                      <TableCell align="right">{row.carbs}</TableCell>
-                      <TableCell align="right">{row.protein}</TableCell>
                     </TableRow>
                   );
                 })}
