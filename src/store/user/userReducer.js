@@ -3,6 +3,7 @@ import {
   FILTER_SUCCESS,
   FILTER_FAILED,
   MAP_INFOS,
+  GAME_DIFFICULTY,
 } from "./userType";
 import CITIES from "../../assets/data/cities.json";
 
@@ -13,6 +14,7 @@ const INITIAL_STATE = {
   filterError: "",
   error: "",
   map: "",
+  gameDifficulty: "",
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -43,6 +45,11 @@ const userReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         map: action.mapData,
+      };
+    case GAME_DIFFICULTY:
+      return {
+        ...state,
+        gameDifficulty: action.difficulty,
       };
     default:
       return state;
