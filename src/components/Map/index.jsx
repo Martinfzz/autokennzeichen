@@ -6,7 +6,7 @@ import Pins from "../Pins";
 import CityInfo from "../../city-info";
 import MapDisplay from "../MapDisplay";
 
-const Map = ({ labelsDisplays, datas }) => {
+const Map = ({ labelsDisplays, datas, pinClicked }) => {
   const [viewport, setViewport] = useState({
     latitude: 51.10,
     longitude: 10.27,
@@ -17,6 +17,11 @@ const Map = ({ labelsDisplays, datas }) => {
 
   const [popupInfo, setPopupInfo] = useState(null);
   const mapStyle = useSelector((store) => store.map);
+
+  const handleOnClick = (value) => {
+    setPopupInfo();
+    pinClicked(value);
+  };
 
   return (
     <>
@@ -30,7 +35,7 @@ const Map = ({ labelsDisplays, datas }) => {
           mapStyle={mapStyle}
           mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
         >
-          <Pins data={datas} onClick={setPopupInfo} />
+          <Pins data={datas} onClick={handleOnClick} />
 
           {popupInfo && (
           <Popup
