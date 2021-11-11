@@ -37,17 +37,17 @@ const Filter = () => {
   const filtered = (target) => {
     if (searchValue !== "" && searchLaender.length !== 0) {
       const filteredCities = searchLaender.map((element) => CITIES.filter(
-        (n) => n.laender.includes(element.value) && n[`${target}`].toLowerCase() === searchValue.toLowerCase(),
+        (n) => n.laender.startsWith(element.value) && n[`${target}`].toLowerCase().startsWith(searchValue.toLowerCase()),
       )).flat(1);
       store.dispatch(filterSuccess(filteredCities));
     } else if (searchValue === "" && searchLaender.length !== 0) {
       const filteredCities = searchLaender.map((element) => CITIES.filter(
-        (n) => n.laender.includes(element.value),
+        (n) => n.laender.startsWith(element.value),
       )).flat(1);
       store.dispatch(filterSuccess(filteredCities));
     } else if (searchValue !== "" && searchLaender.length === 0) {
       const filteredCities = CITIES.filter(
-        (element) => element[`${target}`].toLowerCase() === searchValue.toLowerCase(),
+        (element) => element[`${target}`].toLowerCase().startsWith(searchValue.toLowerCase()),
       );
       store.dispatch(filterSuccess(filteredCities));
     } else {

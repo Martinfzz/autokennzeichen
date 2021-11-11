@@ -25,7 +25,7 @@ const Map = () => {
         <MapDisplay />
         <ReactMapGL
           {...viewport}
-          width="100vw"
+          width="80vw"
           height="100vh"
           onViewportChange={setViewport}
           mapStyle={mapStyle}
