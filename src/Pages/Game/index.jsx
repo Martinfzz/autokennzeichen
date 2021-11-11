@@ -25,7 +25,10 @@ const Game = () => {
     if (Object.keys(selectedPin).length !== 0) {
       if (selectedCity.map((e) => e.code).join() === selectedPin.code) {
         console.log("Trouvé");
-        playgame(filteredData);
+        const newDatas = filteredData.filter((e) => e.code !== selectedPin.code);
+        console.log(newDatas);
+        store.dispatch(filterSuccess(newDatas));
+        playgame(newDatas);
       } else {
         console.log("dommage");
       }
