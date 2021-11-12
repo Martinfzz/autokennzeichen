@@ -43,10 +43,11 @@ const Game = () => {
     } else {
       filteredCities = CITIES.filter((n) => n.code.length === value);
     }
-    store.dispatch(filterSuccess(filteredCities));
-    setNewFilteredData(filteredCities);
+    const filteredCitiesXY = filteredCities.filter((n) => n.longitude !== 0);
+    store.dispatch(filterSuccess(filteredCitiesXY));
+    setNewFilteredData(filteredCitiesXY);
     setDisplayGameMenu(false);
-    playgame(filteredCities);
+    playgame(filteredCitiesXY);
   };
 
   useEffect(() => {
