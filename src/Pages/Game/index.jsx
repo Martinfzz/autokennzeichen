@@ -5,6 +5,7 @@ import { filterSuccess, filterFailed } from "../../store/user/userAction";
 import CITIES from "../../assets/data/cities.json";
 import Map from "../../components/Map";
 import GameMenu from "../../components/GameMenu";
+import GameTurn from "../../components/GameTurn";
 
 const Game = () => {
   const gameDifficulty = useSelector((stock) => stock.gameDifficulty);
@@ -64,10 +65,13 @@ const Game = () => {
     }
   }, [gameDifficulty]);
 
+  console.log(selectedCity);
+
   return (
     <>
       <Map labelsDisplays={false} datas={filteredData} pinClicked={setSelectedPin} />
       {displayGameMenu && <GameMenu />}
+      {!displayGameMenu && <GameTurn data={selectedCity} />}
     </>
   );
 };
