@@ -46,13 +46,13 @@ function getMapStyle({ visibility, color }) {
   store.dispatch(mapInfos(defaultMapStyle.set("layers", layers)));
 }
 
-function StyleControls() {
+function StyleControls({ labelsDisplay }) {
   const visibility = {
     water: true,
     parks: true,
     buildings: true,
     roads: true,
-    labels: true,
+    labels: labelsDisplay,
     background: true,
   };
 

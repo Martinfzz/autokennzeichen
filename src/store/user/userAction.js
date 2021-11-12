@@ -3,6 +3,7 @@ import {
   FILTER_SUCCESS,
   FILTER_FAILED,
   MAP_INFOS,
+  GAME_DIFFICULTY,
 } from "./userType";
 
 export const filterRequest = () => ({
@@ -22,4 +23,9 @@ export const filterFailed = (error) => ({
 export const mapInfos = (data) => ({
   type: MAP_INFOS,
   mapData: data,
+});
+
+export const gameDifficulty = (data) => ({
+  type: GAME_DIFFICULTY,
+  difficulty: data,
 });

@@ -6,7 +6,7 @@ import Pins from "../Pins";
 import CityInfo from "../../city-info";
 import MapDisplay from "../MapDisplay";
 
-const Map = () => {
+const Map = ({ labelsDisplays, datas, pinClicked }) => {
   const [viewport, setViewport] = useState({
     latitude: 51.10,
     longitude: 10.27,
@@ -16,13 +16,17 @@ const Map = () => {
   });
 
   const [popupInfo, setPopupInfo] = useState(null);
-  const filteredData = useSelector((store) => store.filterData);
   const mapStyle = useSelector((store) => store.map);
+
+  const handleOnClick = (value) => {
+    setPopupInfo();
+    pinClicked(value);
+  };
 
   return (
     <>
-      <div className="top-0 z-10 absolute">
-        <MapDisplay />
+      <div className="top-0 absolute">
+        <MapDisplay labelsDisplay={labelsDisplays} />
         <ReactMapGL
           {...viewport}
           width="80vw"
@@ -31,7 +35,7 @@ const Map = () => {
           mapStyle={mapStyle}
           mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
         >
-          <Pins data={filteredData} onClick={setPopupInfo} />
+          <Pins data={datas} onClick={handleOnClick} />
 
           {popupInfo && (
           <Popup

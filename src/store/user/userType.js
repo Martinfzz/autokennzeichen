@@ -5,3 +5,5 @@ export const FILTER_SUCCESS = "FILTER_SUCCESS";
 export const FILTER_FAILED = "FILTER_FAILED";
 
 export const MAP_INFOS = "MAP_INFOS";
+
+export const GAME_DIFFICULTY = "GAME_DIFFICULTY";
