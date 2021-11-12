@@ -6,6 +6,7 @@ import CITIES from "../../assets/data/cities.json";
 import Map from "../../components/Map";
 import GameMenu from "../../components/GameMenu";
 import GameTurn from "../../components/GameTurn";
+import TurnAlert from "../../components/TurnAlert";
 
 const Game = () => {
   const gameDifficulty = useSelector((stock) => stock.gameDifficulty);
@@ -14,6 +15,7 @@ const Game = () => {
   const [selectedPin, setSelectedPin] = useState({});
   const [selectedCity, setSelectedCity] = useState([]);
   const [newFilteredData, setNewFilteredData] = useState([]);
+  const [cityFounded, setCityFounded] = useState(null);
 
   const [displayGameMenu, setDisplayGameMenu] = useState(true);
 
@@ -27,11 +29,13 @@ const Game = () => {
     if (Object.keys(selectedPin).length !== 0) {
       if (selectedCity.map((e) => e.code).join() === selectedPin.code) {
         console.log("Trouvé");
+        setCityFounded(true);
         const newDatas = newFilteredData.filter((e) => e.code !== selectedPin.code);
         console.log(newDatas);
         setNewFilteredData(newDatas);
         playgame(newDatas);
       } else {
+        setCityFounded(false);
         console.log("dommage");
       }
     }
@@ -72,6 +76,7 @@ const Game = () => {
       <Map labelsDisplays={false} datas={filteredData} pinClicked={setSelectedPin} />
       {displayGameMenu && <GameMenu />}
       {!displayGameMenu && <GameTurn data={selectedCity} />}
+      {cityFounded !== null && <TurnAlert founded={cityFounded} />}
     </>
   );
 };
