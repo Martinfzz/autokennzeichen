@@ -12,6 +12,7 @@ const Game = () => {
   // const selectedCity = useSelector((stock) => stock.selectedCity);
   const [selectedPin, setSelectedPin] = useState({});
   const [selectedCity, setSelectedCity] = useState([]);
+  const [newFilteredData, setNewFilteredData] = useState([]);
 
   const [displayGameMenu, setDisplayGameMenu] = useState(true);
 
@@ -25,9 +26,9 @@ const Game = () => {
     if (Object.keys(selectedPin).length !== 0) {
       if (selectedCity.map((e) => e.code).join() === selectedPin.code) {
         console.log("Trouvé");
-        const newDatas = filteredData.filter((e) => e.code !== selectedPin.code);
+        const newDatas = newFilteredData.filter((e) => e.code !== selectedPin.code);
         console.log(newDatas);
-        store.dispatch(filterSuccess(newDatas));
+        setNewFilteredData(newDatas);
         playgame(newDatas);
       } else {
         console.log("dommage");
@@ -35,20 +36,28 @@ const Game = () => {
     }
   }, [selectedPin]);
 
-  const cityFilter = (value) => {
-    const filteredCities = CITIES.filter((n) => n.code.length <= value);
+  const cityFilter = (value, insane) => {
+    let filteredCities = null;
+    if (insane) {
+      filteredCities = CITIES.filter((n) => n.code.length <= value);
+    } else {
+      filteredCities = CITIES.filter((n) => n.code.length === value);
+    }
     store.dispatch(filterSuccess(filteredCities));
+    setNewFilteredData(filteredCities);
     setDisplayGameMenu(false);
     playgame(filteredCities);
   };
 
   useEffect(() => {
     if (gameDifficulty === "Easy") {
-      cityFilter(1);
+      cityFilter(1, false);
     } else if (gameDifficulty === "Medium") {
-      cityFilter(2);
+      cityFilter(2, false);
     } else if (gameDifficulty === "Hard") {
-      cityFilter(3);
+      cityFilter(3, false);
+    } else if (gameDifficulty === "Insane") {
+      cityFilter(3, true);
     } else {
       store.dispatch(filterFailed("No difficulty selected"));
     }
